@@ -1,24 +1,21 @@
 import streamlit as st
-import numpy as np
 import pickle
+import numpy as np
 
-# Load model
-model = pickle.load(open("churn_model.pkl", "rb"))
+st.title("Customer Churn Predictor")
 
-st.title("Customer Churn Prediction")
-
-# Inputs
+# Sample Inputs
 tenure = st.slider("Tenure (months)", 0, 72, 12)
-monthly_charges = st.number_input("Monthly Charges", min_value=0.0)
-total_charges = st.number_input("Total Charges", min_value=0.0)
+monthly_charges = st.number_input("Monthly Charges")
+total_charges = st.number_input("Total Charges")
 
-# Example: You’ll later expand inputs to include contract type, internet service, etc.
-# Dummy fixed values to match expected model input size
-fixed_inputs = np.array([1, 0, 0, 1, 0])  # Example dummies
+# Dummy: Replace this with actual encoding logic
+contract = st.selectbox("Contract Type", ["Month-to-month", "One year", "Two year"])
 
-# Prediction
 if st.button("Predict"):
-    input_data = np.array([[tenure, monthly_charges, total_charges, *fixed_inputs]])
+    # Dummy feature vector
+    input_data = np.array([[tenure, monthly_charges, total_charges, 1, 0, 0]])
+    model = pickle.load(open("churn_model.pkl", "rb"))
     prediction = model.predict(input_data)
-    result = "Churn" if prediction[0] == 1 else "No Churn"
-    st.success(f"Prediction: {result}")
+
+    st.write("Churn Prediction:", "Yes" if prediction[0]==1 else "No")
